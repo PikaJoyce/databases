@@ -6,27 +6,19 @@ USE chat;
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(25)
-
-  -- PRIMARY KEY (id)
 ); 
 
 
 CREATE TABLE messages (
   id INT AUTO_INCREMENT PRIMARY KEY,
   msg VARCHAR(200),
+  roomname VARCHAR(20),
   users_id INT NOT NULL, 
   
-  FOREIGN KEY (users_id) 
+  FOREIGN KEY (users_id)
   REFERENCES users(id)
   ON DELETE CASCADE
-
-  -- PRIMARY KEY (id)
 ); 
-
-
-
-
-
 
   /* Describe your table here.*/
 

@@ -15,13 +15,14 @@ module.exports = {
   },
 
     post: function (req, res) {
-      console.log(req.body[0])
-      models.messages.post(req.body[0], (err) => {
+      models.messages.post(req.body, (err) => {
+        console.log(req.body, 'this is req.body controllers')
         if(err) {
+          console.log('controller failed')
           res.status(400)
           res.end()
         } else {
-        res.status(202)
+        res.status(200)
         res.end()
       }
     })
@@ -41,7 +42,20 @@ module.exports = {
           res.end()
       })
     },
-    post: function (req, res) {}
+    post: function (req, res) {
+      // console.log(typeof req.body.username)
+      models.users.post(req.body.username, (err)=>{
+        if (err) {
+          console.log('not working')
+          res.status(400)
+          res.end()
+        } else {
+          console.log('working')
+          res.status(202)
+          res.end('working')
+        }
+      })
+    }
   },
 };
 

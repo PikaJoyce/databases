@@ -3,11 +3,6 @@ var { db } = require('../db/index.js');
 module.exports = {
   messages: {
     get: function (callback) {
-      // Pass in a callback
-      // Send query req
-      // Pass in query string, and callback(err,data)
-      // if err, console err
-      // Otherwise pass data into cb 
       db.query(`SELECT * FROM messages`, (err, messages) => {
         if (err) {
           callback(err);
@@ -18,10 +13,11 @@ module.exports = {
       });
     },
     post: function (body, callback) {
-      let { msg, users_id } = body
-      // console.log(reqBody)
-      db.query(`INSERT INTO messages (msg, users_id) VALUES ('${msg}', ${users_id})`, (err) => {
+      let { msg, roomname, username } = body
+      console.log(body, 'this is body models');
+      db.query(`INSERT INTO messages (msg, roomname, users_id) VALUES ('${msg}', '${roomname}', (SELECT id FROM users WHERE users.username = '${username}'))`, (err) => {
         if (err) {
+          console.log('model fail')
           callback(err)
           return;
         } else {
@@ -32,7 +28,6 @@ module.exports = {
   },
 
   users: {
-    // Ditto as above.
     get: function (callback) {
       db.query('SELECT * FROM users', (err, users) => {
         if (err) {
@@ -43,22 +38,17 @@ module.exports = {
         }
       });
     },
-    post: function () { }
-  },
-
-  rooms: {
-    get: function (callback) {
-      db.query('SELECT * FROM rooms', (err, rooms) => {
+    post: function (username, callback) {
+      db.query(`INSERT INTO users (username) VALUES ('${username}')`, (err,data)=> {
         if (err) {
           callback(err)
           return;
         } else {
-          callback(null, rooms)
+          callback(null, data)
         }
       })
-    },
-    post: function () { }
-  }
+    }
+  },
 };
 
 
