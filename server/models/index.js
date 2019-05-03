@@ -15,13 +15,13 @@ module.exports = {
     post: function (body, callback) {
       let { msg, roomname, username } = body
       console.log(body, 'this is body models');
-      db.query(`INSERT INTO messages (msg, roomname, users_id) VALUES ('${msg}', '${roomname}', (SELECT id FROM users WHERE users.username = '${username}'))`, (err) => {
+      db.query(`INSERT INTO messages (msg, roomname, users_id) VALUES ('${msg}', '${roomname}', (SELECT id FROM users WHERE users.username = '${username}'))`, (err,data) => {
         if (err) {
           console.log('model fail')
           callback(err)
           return;
         } else {
-          console.log('posted')
+          callback(null, data)
         }
       })
     }
